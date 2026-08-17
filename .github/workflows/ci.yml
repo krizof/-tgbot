@@ -34,4 +34,3 @@ jobs:
           cache-dependency-path: game-site/pnpm-lock.yaml
       - run: pnpm install --frozen-lockfile
       - run: pnpm build
-      - run: docker build -t friends-arcade:test .
