@@ -1,0 +1,24 @@
+[project]
+name = "discord-checkin-bot"
+version = "1.0.0"
+description = "Private anonymous Telegram check-in bot for a group of friends"
+requires-python = ">=3.12"
+dependencies = [
+  "aiogram>=3.15,<4",
+  "aiosqlite>=0.20,<1",
+  "apscheduler>=3.10,<4",
+  "sqlalchemy>=2.0,<3",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8,<9",
+  "pytest-asyncio>=0.24,<1",
+]
+
+[tool.setuptools]
+packages = ["bot"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]

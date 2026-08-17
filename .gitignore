@@ -1,0 +1,13 @@
+.env
+.venv/
+__pycache__/
+.pytest_cache/
+*.py[cod]
+data/*.db
+data/*.db-*
+game-site/node_modules/
+game-site/.next/
+game-site/dist/
+game-site/.vinext/
+game-site/.wrangler/
+work/
