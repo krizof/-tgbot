@@ -6,9 +6,8 @@
 pnpm install
 pnpm dev
 pnpm build
-docker build -t friends-arcade .
 ```
 
 Результат отправляется через `Telegram.WebApp.sendData`, поэтому страницу нужно открывать только кнопкой `KeyboardButton.web_app`, которую бот показывает после `/games`. На странице нет токена бота, Telegram ID или базы участников. Результат принимает бот и хранит в своей SQLite-базе.
 
-В production страницу запускает `compose.prod.yaml` основного проекта, а Caddy автоматически выдаёт HTTPS-сертификат для `GAME_DOMAIN`.
+При push в `main` workflow `pages.yml` собирает статическую версию и публикует её по адресу `https://krizof.github.io/-tgbot/`. Бот продолжает работать локально в Docker и получает этот адрес через `MINI_APP_URL`.

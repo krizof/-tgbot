@@ -141,34 +141,19 @@
 Для работы нужен публичный HTTPS-адрес страницы. После публикации впишите его в `.env`:
 
 ```env
-MINI_APP_URL=https://адрес-игры.example
+MINI_APP_URL=https://krizof.github.io/-tgbot/
 ```
 
 Затем пересоберите контейнер. Сами игры выполняются на устройстве участника, поэтому рейтинг рассчитан на честную частную компанию и не является защищённым от технической накрутки.
 
-### Production: Docker + GitHub + VPS
+### GitHub Pages + локальный Docker
 
-В production используются три контейнера: `bot`, `game` и `caddy`. Caddy принимает подключения на портах 80/443, автоматически получает TLS-сертификат и передаёт запросы игровому контейнеру. База бота остаётся в закрытом Docker-томе и через интернет не публикуется.
+Бот и SQLite работают в Docker на домашнем компьютере. Игровая страница статическая: GitHub Actions автоматически публикует её через GitHub Pages при изменениях в `main`. VPS, домен и открытые входящие порты не требуются.
 
-1. Создайте пустой GitHub-репозиторий и отправьте в него проект. Настоящий `.env` в GitHub не добавляйте.
-2. Создайте DNS-запись типа `A`: игровой поддомен должен указывать на публичный IPv4 сервера.
-3. На Ubuntu-сервере установите Docker Engine и Compose plugin, откройте TCP-порты 22, 80 и 443, а также UDP 443.
-4. Клонируйте репозиторий на сервер и создайте `.env` из `.env.example`. Заполните `BOT_TOKEN`, `ADMIN_IDS` и `GAME_DOMAIN`. Переменную `MINI_APP_URL` в production Compose выставит автоматически.
-5. Запустите весь комплект:
-
-   ```bash
-   docker compose -f compose.yaml -f compose.prod.yaml up -d --build
-   docker compose -f compose.yaml -f compose.prod.yaml logs -f
-   ```
-
-Обновление после отправки нового кода в GitHub:
-
-```bash
-git pull --ff-only
-docker compose -f compose.yaml -f compose.prod.yaml up -d --build
-```
-
-Файл `.github/workflows/ci.yml` автоматически проверяет Python-тесты, сборку Next.js и игровой Docker-образ при каждом push и pull request.
+- `.github/workflows/ci.yml` проверяет Python-тесты и сборку игры;
+- `.github/workflows/pages.yml` публикует содержимое `game-site/out`;
+- настоящий `.env` и база остаются только на компьютере владельца;
+- после первой публикации в `.env` должен быть задан адрес `https://krizof.github.io/-tgbot/`.
 
 ## Модель приватности
 
